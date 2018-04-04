@@ -79,7 +79,7 @@ function mouseDragged(){
   if(type == "rubber"){
     stroke(51);
     line(pmouseX,pmouseY,mouseX,mouseY)
-    strokeWeight(sizeSlider.value()*5);
+    strokeWeight(sizeSlider.value()*10);
   }else if(type == "pencil"){
     stroke(RSlider.value(),GSlider.value(),BSlider.value());
     strokeWeight(sizeSlider.value());
