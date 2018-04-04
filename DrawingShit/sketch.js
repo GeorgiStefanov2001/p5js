@@ -26,9 +26,9 @@ function setup(){
 function draw(){
   CanvasControl();
   textSize(25 );
-  text("R",width-20,height/2+120);
-  text("G",width-20,height/2+170);
-  text("B",width-20,height/2+220);
+  text("R",width-30,height/2+120);
+  text("G",width-30,height/2+170);
+  text("B",width-30,height/2+220);
   textSize(15);
   text("Size",width-40,height/4+80);
   text("Num of lines",width-90,height/4+125);
