@@ -10,21 +10,28 @@ let color;
 function setup(){
   drawCanvas();
   sizeSlider = createSlider(1,10,5,0.01);
-  sizeSlider.position(width+80 ,height/4);
+  sizeSlider.position(width ,height/4+150);
   linesSlider = createSlider(1,4,1);
-  linesSlider.position(width+80,height/4+80);
+  linesSlider.position(width,height/4+200);
 
   RSlider = createSlider(0,255,255);
-  RSlider.position(width+80,height/2+80);
+  RSlider.position(width,height/2+180);
   BSlider = createSlider(0,255,255);
-  BSlider.position(width+80,height/2+140);
+  BSlider.position(width,height/2+240);
   GSlider = createSlider(0,255,255);
-  GSlider.position(width+80,height/2+200);
+  GSlider.position(width,height/2+300);
 
 }
 
 function draw(){
   CanvasControl();
+  textSize(25 );
+  text("R",width-20,height/2+120);
+  text("G",width-20,height/2+170);
+  text("B",width-20,height/2+220);
+  textSize(15);
+  text("Size",width-40,height/4+80);
+  text("Num of lines",width-90,height/4+125);
 }
 
 function keyPressed(){
@@ -38,7 +45,7 @@ function keyPressed(){
 }
 
 function drawCanvas(){
-  createCanvas(650,650);
+  createCanvas(730,650);
   background(51);
 }
 
@@ -54,8 +61,10 @@ function mousePressed(){
 
 function CanvasControl(){
   noStroke();
-  fill(255);
   rectMode(CENTER);
+  fill(70);
+  rect(width-50,height/2,100,height);
+  fill(255);
   rect(width-w,w,w,w);
   textSize(20);
   noStroke();
@@ -72,7 +81,7 @@ function CanvasControl(){
   textSize(10);
   noStroke();
   fill(255);
-  text("Tab - switch (eraser-pencil)",width - w - w*1.6,15);
+  text("Tab - switch",width - w-w/2,15);
 }
 
 function mouseDragged(){
