@@ -1,14 +1,26 @@
 let w = 50;
 let sizeSlider;
 let linesSlider;
+let RSlider;
+let GSlider;
+let BSlider;
 let type = "pencil";
+let color;
 
 function setup(){
   drawCanvas();
   sizeSlider = createSlider(1,10,5,0.01);
-  sizeSlider.position(width+80 ,height/2);
+  sizeSlider.position(width+80 ,height/4);
   linesSlider = createSlider(1,4,1);
-  linesSlider.position(width+80,height/2+80);
+  linesSlider.position(width+80,height/4+80);
+
+  RSlider = createSlider(0,255,255);
+  RSlider.position(width+80,height/2+80);
+  BSlider = createSlider(0,255,255);
+  BSlider.position(width+80,height/2+140);
+  GSlider = createSlider(0,255,255);
+  GSlider.position(width+80,height/2+200);
+
 }
 
 function draw(){
@@ -69,7 +81,7 @@ function mouseDragged(){
     line(pmouseX,pmouseY,mouseX,mouseY)
     strokeWeight(sizeSlider.value()*5);
   }else if(type == "pencil"){
-    stroke(random(0,255),random(0,255),random(0,255));
+    stroke(RSlider.value(),GSlider.value(),BSlider.value());
     strokeWeight(sizeSlider.value());
     line(pmouseX,pmouseY,mouseX,mouseY);
     if(linesSlider.value()>=2){
