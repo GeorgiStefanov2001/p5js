@@ -1,40 +1,30 @@
-let w = 50;
+let rectSide = 50;
+let offsetX = 100; //we use this variable so we can compensate for the options on the right of the screen
+let sliderSize = 70; //we use this variable so we can compensate for the slider size and align it with the text
+let type = "pencil"; //we start with the pencil selected
+
+//Sliders
+
 let sizeSlider;
 let linesSlider;
 let RSlider;
 let GSlider;
 let BSlider;
-let type = "pencil";
-let color;
 
 function setup(){
-  drawCanvas();
-  sizeSlider = createSlider(1,10,5,0.01);
-  sizeSlider.position(width ,height/4+150);
-  linesSlider = createSlider(1,4,1);
-  linesSlider.position(width,height/4+200);
-
-  RSlider = createSlider(0,255,255);
-  RSlider.position(width,height/2+180);
-  BSlider = createSlider(0,255,255);
-  BSlider.position(width,height/2+240);
-  GSlider = createSlider(0,255,255);
-  GSlider.position(width,height/2+300);
+  createCanvas(750,650);
+  background(51);
+  DrawSliders();
 
 }
 
 function draw(){
-  CanvasControl();
-  textSize(25 );
-  text("R",width-30,height/2+120);
-  text("G",width-30,height/2+170);
-  text("B",width-30,height/2+220);
-  textSize(15);
-  text("Size",width-40,height/4+80);
-  text("Num of lines",width-90,height/4+125);
+  DrawButtons();
+  SetText();
 }
 
 function keyPressed(){
+  //The code for switching between rubber and pencil is prety simple:
   if(keyCode === TAB){
     if(type == "pencil"){
       type = "rubber";
@@ -44,77 +34,101 @@ function keyPressed(){
   }
 }
 
-function drawCanvas(){
-  createCanvas(730,650);
-  background(51);
-}
-
 function mousePressed(){
-  if(mouseOnButton()){
-    save("Drawing.png");
+  if(mouseClickedButton(rectSide)){
+    save("Drawing.png"); // prompting the user to save the picture
   }
 
-  if(OnClearButton()){
-    drawCanvas();
+  if(mouseClickedButton(rectSide*2.5)){
+    background(51); //if we want to clear the screen we just redraw the background
   }
 }
 
-function CanvasControl(){
+function DrawButtons(){
   noStroke();
   rectMode(CENTER);
   fill(70);
-  rect(width-50,height/2,100,height);
-  fill(255);
-  rect(width-w,w,w,w);
+  rect(width-offsetX/2,height/2,offsetX,height); //this rect is the differently colored one that is used to store the tools
+  fill(255); //the buttons will be white
+  rect(width-rectSide,rectSide,rectSide,rectSide); //this is the rect for the saving
+  rect(width-rectSide,rectSide*2.5,rectSide,rectSide); //this is the rect for clearing
+  //we multiply rectSide by 2.5 because the distance from the top of the screen to the bottom side of the first rect is exactly 1.5*rectSide
+  //and since we ha ve rectMode(CENTER) we need to add another rectSide ontop of that to make the padding look right
+}
+
+function SetText(){
+  fill(255,75,75);
+  noStroke();
+  textAlign(CENTER);
   textSize(20);
-  noStroke();
-  fill(125);
-  text("Save",width - w - w*0.45,w+w*0.10);
-  noStroke();
-  rectMode(CENTER);
-  fill(255);
-  rect(width-w,2*w+w/2,w,w);
-  textSize(20);
-  noStroke();
-  fill(125);
-  text("Clear",width - w - w*0.50,2.40*(w+w*0.10));
-  textSize(10);
-  noStroke();
-  fill(255);
-  text("Tab - switch",width - w-w/2,15);
+
+  text("Save",width-rectSide,rectSide); //text for saving
+  text("Clear",width-rectSide,rectSide*2.5); //text for clearing the screen (same thing about the multiplication of rectSide by 2.5)
+
+  text("Size",width-rectSide,height/2); //this is the text for the slider that I use for the size of the pencil
+  text("Lines",width-rectSide,height/2+sliderSize); //this is the text for the slider that I use for the size of the pencil
+
+  text("R",width-rectSide,height/2+sliderSize*2); //this is the text for the R Slider, controlling the red in mine RGB sliders
+  text("G",width-rectSide,height/2+sliderSize*3); //this is the text for the G Slider, controlling the red in mine RGB sliders
+  text("B",width-rectSide,height/2+sliderSize*4); //this is the text for the B Slider, controlling the red in mine RGB sliders
+}
+
+function DrawSliders(){
+  //**Slider, controlling the size of the pencil
+  sizeSlider = drawPreMadeSlider(1,10,5,0.01,1);
+
+  //**Slider, controlling the number of linesSlider
+  linesSlider = drawPreMadeSlider(1,4,1,1,2);
+
+  //**Slider, controlling the R value of the color of the lines
+  RSlider = drawPreMadeSlider(0,255,255,0.01,3);
+
+  //**Slider, controlling the G value of the color of the lines
+  GSlider = drawPreMadeSlider(0,255,255,0.01,4);
+
+  //**Slider, controlling the B value of the color of the lines
+  BSlider = drawPreMadeSlider(0,255,255,0.01,5);
+
+}
+
+function drawPreMadeSlider(min, max, curr, step, iter){
+  //I use this pre-made function to draw a slider that is styled by my liking so the code in DrawSliders() is pretier
+  //I use the variable iter to determine where the slider should be placed
+  currSlider = createSlider(min,max,curr,step);
+  currSlider.position(width,height/2+sliderSize*iter);
+  currSlider.style('width','100px'); //this lines make the width of all the sliders to 100px
+
+  return currSlider;
 }
 
 function mouseDragged(){
   if(type == "rubber"){
+    //Code for the rubber
     stroke(51);
-    line(pmouseX,pmouseY,mouseX,mouseY)
+    line(pmouseX,pmouseY,mouseX,mouseY);
     strokeWeight(sizeSlider.value()*10);
   }else if(type == "pencil"){
-    stroke(RSlider.value(),GSlider.value(),BSlider.value());
-    strokeWeight(sizeSlider.value());
-    line(pmouseX,pmouseY,mouseX,mouseY);
+    //Code for the pencil (all four of them)
+    stroke(RSlider.value(),GSlider.value(),BSlider.value()); //using the RGB values from the sliders to make the color of the pencil fully customizable
+    strokeWeight(sizeSlider.value()); //using the sizeSlider to adjust the weight of the stroke (how thick it is)
+    line(pmouseX,pmouseY,mouseX,mouseY); //drawing a line between the previous mouse pos (last frame) and the current mouse pos (this frame)
+    //below we check how many lines we have selected via the linesSlider and draw them
     if(linesSlider.value()>=2){
-      line(width - pmouseX,height - pmouseY,width - mouseX,height - mouseY);
+      line(width-pmouseX-offsetX,pmouseY,width-mouseX-offsetX,mouseY);
       if(linesSlider.value()>=3){
-        line(width - pmouseX,pmouseY,width -  mouseX,mouseY);
+        line(pmouseX,height-pmouseY,mouseX,height-mouseY);
         if(linesSlider.value()==4){
-          line(pmouseX,height- pmouseY,mouseX,height - mouseY);
+          line(width-pmouseX-offsetX,height- pmouseY,width-mouseX-offsetX,height - mouseY);
         }
       }
     }
   }
 }
 
-function mouseOnButton(){
-  if(mouseX>=width - (w+w/2) && mouseX<=width-w/2 && mouseY>=w/2 && mouseY<=w+w/2){
-    return true;
-  }else{
-    return false;
-  }
-}
-
-function OnClearButton(){
-  if(mouseX>=width - (w+w/2) && mouseX<=width-w/2 && mouseY>=2*w && mouseY<=3*w){
+function mouseClickedButton(posY){
+  if(mouseX>=width-(offsetX-rectSide/2) && mouseX<=width-rectSide/2 && mouseY>=posY-rectSide/2 && mouseY<=posY+rectSide/2){
+    //checking to see if the mouse is within the boundaries of the needed button
+    //we determine which button is being click by using posY that we pass in mousePressed()
     return true;
   }else{
     return false;
