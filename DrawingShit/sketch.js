@@ -2,6 +2,7 @@ let rectSide = 50;
 let offsetX = 100; //we use this variable so we can compensate for the options on the right of the screen
 let sliderSize = 70; //we use this variable so we can compensate for the slider size and align it with the text
 let type = "pencil"; //we start with the pencil selected
+let useSliders = true; //decides if we want to use the RGB sliders for the color of the pen (default value: true)
 
 //Sliders
 
@@ -42,6 +43,10 @@ function mousePressed(){
   if(mouseClickedButton(rectSide*2.5)){
     background(51); //if we want to clear the screen we just redraw the background
   }
+
+  if(mouseClickedButton(rectSide*4)){
+    useSliders = !useSliders //toggles the usage of RGB sliders for the colour of the pen
+  }
 }
 
 function DrawButtons(){
@@ -53,7 +58,10 @@ function DrawButtons(){
   rect(width-rectSide,rectSide,rectSide,rectSide); //this is the rect for the saving
   rect(width-rectSide,rectSide*2.5,rectSide,rectSide); //this is the rect for clearing
   //we multiply rectSide by 2.5 because the distance from the top of the screen to the bottom side of the first rect is exactly 1.5*rectSide
-  //and since we ha ve rectMode(CENTER) we need to add another rectSide ontop of that to make the padding look right
+  //and since we have rectMode(CENTER) we need to add another rectSide ontop of that to make the padding look right
+  rect(width-rectSide,rectSide*4,rectSide,rectSide); //this is the rect for using the RGB sliders (or not)
+  //same thing about the multiplication - magical numbers ftw :DDDD
+  //!CHANGE THE MAGICAL NUMBERS USED IN CALCULATING THE PLACEMENT OF THE RECTANGLES
 }
 
 function SetText(){
@@ -64,13 +72,18 @@ function SetText(){
 
   text("Save",width-rectSide,rectSide); //text for saving
   text("Clear",width-rectSide,rectSide*2.5); //text for clearing the screen (same thing about the multiplication of rectSide by 2.5)
+  text("RGB",width-rectSide,rectSide*4); //text for using the RGB sliders for pen color (same thing about the multiplication of rectSide by 4)
 
   text("Size",width-rectSide,height/2); //this is the text for the slider that I use for the size of the pencil
   text("Lines",width-rectSide,height/2+sliderSize); //this is the text for the slider that I use for the size of the pencil
 
-  text("R",width-rectSide,height/2+sliderSize*2); //this is the text for the R Slider, controlling the red in mine RGB sliders
-  text("G",width-rectSide,height/2+sliderSize*3); //this is the text for the G Slider, controlling the red in mine RGB sliders
-  text("B",width-rectSide,height/2+sliderSize*4); //this is the text for the B Slider, controlling the red in mine RGB sliders
+  text("R",width-(rectSide*1.5),height/2+sliderSize*2); //this is the text for the R Slider, controlling the red in my RGB sliders
+  text(floor(RSlider.value()),width - (rectSide*0.5), height/2 + sliderSize*2); //this text represents the value of the R Slider
+  text("G",width-(rectSide*1.5),height/2+sliderSize*3); //this is the text for the G Slider, controlling the red in my RGB sliders
+  text(floor(GSlider.value()),width - (rectSide*0.5), height/2 + sliderSize*3); //this text represents the value of the G Slider
+  text("B",width-(rectSide*1.5),height/2+sliderSize*4); //this is the text for the B Slider, controlling the red in my RGB sliders
+  text(floor(BSlider.value()),width - (rectSide*0.5), height/2 + sliderSize*4); //this text represents the value of the B Slider
+  //SAME THING WITH THE MAGICAL NUMBERS - USED TO MAKE THE PLACEMENT BETTER
 }
 
 function DrawSliders(){
@@ -109,7 +122,11 @@ function mouseDragged(){
     strokeWeight(sizeSlider.value()*10);
   }else if(type == "pencil"){
     //Code for the pencil (all four of them)
-    stroke(RSlider.value(),GSlider.value(),BSlider.value()); //using the RGB values from the sliders to make the color of the pencil fully customizable
+    if(useSliders){
+      stroke(RSlider.value(),GSlider.value(),BSlider.value()); //using the RGB values from the sliders to make the color of the pencil fully customizable
+    }else{
+      stroke(random(255),random(255),random(255)); //giving the pen a random color and it makes it look nice :DD
+    }
     strokeWeight(sizeSlider.value()); //using the sizeSlider to adjust the weight of the stroke (how thick it is)
     line(pmouseX,pmouseY,mouseX,mouseY); //drawing a line between the previous mouse pos (last frame) and the current mouse pos (this frame)
     //below we check how many lines we have selected via the linesSlider and draw them
