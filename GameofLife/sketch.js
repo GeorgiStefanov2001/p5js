@@ -1,12 +1,14 @@
-let side = 20; //the side of one rect / cell
-let cols = 40; //number of columns
-let rows = 40; //number of rows
+let side = 10; //the side of one rect / cell
+let cols; //number of columns
+let rows; //number of rows
 
 let current = []; //the grid we use for the cells
 let next = []; //for the next generation
 
 function setup(){
   createCanvas(800,800);
+  cols = width/side;
+  rows = height/side;
   background(51);
   createMatrix();
 }
@@ -38,6 +40,7 @@ function drawGrid(){
     for(let j = 0;j<cols;j++){
       let fillColor = current[i][j] == 1 ? 0 : 255; //black if the cell is alive, white if it's dead
       fill(fillColor);
+      noStroke();
       rect(side*i,side*j,side,side); //making a 'cell' - a simple rect with a size of 'side'
     }
   }
