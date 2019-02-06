@@ -11,11 +11,12 @@ function setup(){
   rows = height/side;
   background(51);
   createMatrix();
+  frameRate(20);
 }
 
 function draw(){
-    drawGrid(side);
-    generate();
+  drawGrid(side);
+  generate();
 }
 
 function createMatrix(){
