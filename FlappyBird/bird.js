@@ -8,7 +8,7 @@ function Bird(x,y){
     this.isAlive = true;
 
     this.show = function(){
-        noStroke();
+        noStroke(); 
         fill(255);
         ellipse(this.x,this.y,this.r*2,this.r*2);
     }
